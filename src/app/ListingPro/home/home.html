@@ -202,8 +202,8 @@
           <div class="section" *ngIf="byCategoryListings[j] && byCategoryListings[j].length>0" style="padding-bottom: 0;">
               <ion-label class="titleSection">
                   {{ 'EXPLORE' | translate }}  {{category.name}}
-                  <ion-button  *ngIf="GlobalFields.getLanguageLayout()=='ltr'" color="dark" fill="clear" class="btnLight" style="margin-top: 0px; position: absolute; right: 0; font-size: 10pt;" (click)="searchByCat(category.name)">{{'SEE_ALL' | translate}} ></ion-button>
-                  <ion-button  *ngIf="GlobalFields.getLanguageLayout()=='rtl'" color="dark" fill="clear" class="btnLight" style="margin-top: 0px; position: absolute; left: 0; font-size: 10pt;" (click)="searchByCat(category.name)">{{'SEE_ALL' | translate}} ></ion-button>
+                  <ion-button  *ngIf="GlobalFields.getLanguageLayout()=='ltr'" color="dark" fill="clear" class="btnLight" style="color:#17d01f; margin-top: 0px; position: absolute; right: 0; font-size: 10pt;" (click)="searchByCat(category.name)">{{'SEE_ALL' | translate}} ></ion-button>
+                  <ion-button  *ngIf="GlobalFields.getLanguageLayout()=='rtl'" color="dark" fill="clear" class="btnLight" style="color:#17d01f; margin-top: 0px; position: absolute; left: 0; font-size: 10pt;" (click)="searchByCat(category.name)">{{'SEE_ALL' | translate}} ></ion-button>
               </ion-label>
               <div *ngIf="!loadingByCategories && byCategoryListings && byCategoryListings.length>0">
                   <ion-slides [options]="slideOpts2">

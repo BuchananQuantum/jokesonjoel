@@ -87,7 +87,7 @@
 }
 
 .statsBox i {
-  color: rgba(0, 0, 0, .15);
+  color: rgba(255, 255, 255, 0.15);
   position: absolute;
   right: 50px;
   font-size: 28px;
@@ -100,14 +100,14 @@
   display: -ms-flexbox;
   display: flex;
   justify-content: space-around;
-  color: #757d83;
+  color: #ffffff;
 }
 
 .numberStats p span {
   font-size: 22px;
   font-weight: 400;
   margin-bottom: 10px;
-  color: #383838;
+  color: #ffffff;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

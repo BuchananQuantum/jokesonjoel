@@ -82,7 +82,7 @@
 }
 
 ion-toolbar{
-  --background: transparent;
+  --background: #000000;
 }
 .header-ios ion-toolbar:last-child {
   --border-width: 0;
@@ -93,8 +93,8 @@ ion-item{
 }
 
 ion-item {
-  --background: transparent !important;
-  background-color: transparent !important;
+  --background: #000000 !important;
+  background-color: #000000 !important;
 }
 
 
@@ -105,15 +105,15 @@ ion-item {
 
 
 .list-md{
-  background-color: transparent;
+  background-color: #000000;
 }
 
 .list-ios{
-  background-color: transparent;
+  background-color: #000000;
 }
 
 .item-native{
-  background-color: transparent;
+  background-color: #000000;
 }
 
 ion-fab-button {

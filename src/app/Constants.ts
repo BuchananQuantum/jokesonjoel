@@ -1,16 +1,6 @@
 export class Constants {
 
 
-  /*
-
-  ** REMEMBER: first thing to do after opened the project is to run: npm install
-
-  Please read our documentation: http://customlistingapp.italiancoders.com/documentation/
-
-  Join our fb group: https://www.facebook.com/groups/880553875456862/
-
-  */
-
   public static url = ''; //change it with your directory website url startin with https://
   public static GoogleMapsKEY = 'AIzaSy-your_Key'; //Eg 'AIzaSy-your_Key' change it, then run the next command: ionic cordova plugin add uk.co.workingedge.phonegap.plugin.launchnavigator --variable GOOGLE_API_KEY_FOR_ANDROID="AIzaSy-your_Key"
 

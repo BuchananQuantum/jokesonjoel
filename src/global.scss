@@ -15,6 +15,10 @@ body {
   font-family: inherit;
 }
 
+.nameLabel div {
+  display: none;
+}
+
 html:not(.hydrated) body {
   display: initial !important;
 }
@@ -980,6 +984,10 @@ page-listingList {
   border-radius: 3px;
 }
 
+.pageSection h3 {
+  color: #ffffff;
+}
+
 .native-textarea.sc-ion-textarea-md {
   min-height: 50px !important;
 }
@@ -1211,6 +1219,9 @@ page-listingList {
   color: #ffffff;
 }
 
+.ion-label .div {
+  display: none;
+}
 
 .footer-ios ion-toolbar:first-of-type {
   --border-width: 0 !important;
