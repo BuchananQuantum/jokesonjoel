@@ -16,7 +16,7 @@
         <ion-grid *ngIf="listing.post_meta" class="listingType" dir="{{GlobalFields.getLanguageLayout()}}">
           <ion-row *ngIf="!little">
               <ion-col size="12" class="typeTitle">
-                  <span *ngIf="listing.category" style="font-weight: 400;">
+                  <span *ngIf="listing.category" style="font-weight: 600;">
                     <img *ngIf="listing.category.icon1" src="{{listing.category.icon1}}" style="height: 13px; margin-right: 5px;">
                     {{listing.category.name}}</span>
                   <!-- Featured -->

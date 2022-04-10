@@ -307,9 +307,9 @@ export class GlobalFields {
 
   public static isWhiteBackground(): boolean {
     if (!this.site_details.bodyBackgroundColor ||
-      this.site_details.bodyBackgroundColor == 'white' ||
-      this.site_details.bodyBackgroundColor == '#fff' ||
-      this.site_details.bodyBackgroundColor == '#ffffff')
+      this.site_details.bodyBackgroundColor == 'black' ||
+      this.site_details.bodyBackgroundColor == '#000' ||
+      this.site_details.bodyBackgroundColor == '#000000')
       return true;
     else
       return false;
