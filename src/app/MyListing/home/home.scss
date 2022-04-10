@@ -3,7 +3,7 @@
   background-color: rgb(0, 0, 0);
 }
 .social-cards ion-col{
-  background-color: transparent !important;
+  background-color: #000000;
 }
 .searchText{
   color: #ffffff;
@@ -80,7 +80,7 @@
 
 .social-cards ion-col {
   padding: 0;
-  background-color: #f3f5f8;
+  background-color: #000000;
 }
 
 
@@ -213,6 +213,7 @@
   position: relative;
   margin-top: 60px;
   margin-bottom: -25px;
+  display: none;
 }
 .imgLogoHorizontalrtl {
   margin-right: 25% !important;

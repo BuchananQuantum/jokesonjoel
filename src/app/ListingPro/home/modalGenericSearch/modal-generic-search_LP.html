@@ -51,7 +51,7 @@
         <ion-label style="text-transform: capitalize"><b>{{'NEAR_YOU' | translate}}</b></ion-label>
       </ion-list-header>
       <span *ngFor="let cat of GlobalFieldsListingPro.listingCategories">
-         <ion-item *ngIf="cat && cat.count>0" style="color: #484848;" [detail]="false" (click)="searchNearMe(cat.name)">
+         <ion-item *ngIf="cat && cat.count>0" style="color: #ffffff;" [detail]="false" (click)="searchNearMe(cat.name)">
           <span slot="start" class="iconType">
             <img *ngIf="cat.icon1" src="{{cat.icon1}}" style="height: 20px;margin-top: -5px;">
           </span>
@@ -73,7 +73,7 @@
       <!-- No results -->
       <ion-list *ngIf="!results.suggestions || ( (!results.suggestions.listing || results.suggestions.listing.length==0) && (!results.suggestions.cats || results.suggestions.cats.length==0)
       && (!results.suggestions.tag || results.suggestions.tag.length==0))" dir="{{GlobalFields.getLanguageLayout()}}">
-          <ion-item style="color: #484848;" [detail]="false">
+          <ion-item style="color: #ffffff;" [detail]="false">
             <span slot="start" class="iconType">
             </span>
             <ion-label>
@@ -91,7 +91,7 @@
           </ion-list-header>
           <span *ngFor="let listing of results.suggestions.listing">
             <ion-item (click)="getListingDetails(listing.ID)"
-                      style="color: #484848;" [detail]="false">
+                      style="color: #ffffff;" [detail]="false">
               <span slot="start" class="iconType">
                 <div *ngIf="listing.thumb" class="imageCacheGeneralSearch">
                   <img-loader [src]="listing.thumb" useImg [imgAttributes]="getImgCachedClass('imgAirbnbHomeType')"></img-loader>
@@ -121,7 +121,7 @@
             <ion-label><b>{{'CATEGORIES' | translate}}</b></ion-label>
           </ion-list-header>
           <span *ngFor="let cat of results.suggestions.cats">
-            <ion-item style="color: #484848;" [detail]="false" (click)="getListingsByCategory(cat.name)">
+            <ion-item style="color: #ffffff;" [detail]="false" (click)="getListingsByCategory(cat.name)">
               <span slot="start" class="iconType"><img *ngIf="cat.icon1" src="{{cat.icon1}}" style="height: 20px;margin-top: -5px;"></span>
             <ion-label>
               <b>{{cat.name}}</b>
@@ -141,7 +141,7 @@
           </ion-list-header>
           <span *ngFor="let tag of results.suggestions.tag">
             <ion-item (click)="getListingsByTag(tag)"
-                      style="color: #484848;" [detail]="false">
+                      style="color: #ffffff;" [detail]="false">
               <span slot="start" class="iconType"><i class="fas fa-hashtag"></i></span>
             <ion-label>
               <b>{{tag.name}}</b>

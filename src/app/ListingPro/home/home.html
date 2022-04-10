@@ -3,9 +3,11 @@
 <ion-header class="ion-header" *ngIf="GlobalFields.site_details.navigationType==2" translucent="false" dir="{{GlobalFields.getLanguageLayout()}}">
   <ion-toolbar [class.sidebarHeader]="GlobalFields.site_details.homeType != 1 ">
     <ion-buttons slot="start">
-      <ion-menu-button style="color: #ffffff"></ion-menu-button>
+      <ion-menu-button style="color: #00ffff"></ion-menu-button>
     </ion-buttons>
-    <div *ngIf="GlobalFields.site_details.logoUrl" style="text-align: center; width: 100%"><img [src]="GlobalFields.site_details.logoUrl" style="height: 38px; width: auto; max-width: none !important;"></div>
+    <div *ngIf="GlobalFields.site_details.logoUrl" style="text-align: center; width: 100%">
+      <h2 class="logo-header">UberBooty</h2>
+    </div>
     <ion-title *ngIf="!GlobalFields.site_details.logoUrl">{{appName}}</ion-title>
     <ion-buttons slot="end" style="margin-right: 10px">
       <button class="btn-search-header" (click)="openModalSearch()" dir="{{GlobalFields.getLanguageLayout()}}"><i class="fas fa-search"></i></button>
@@ -18,7 +20,7 @@
   <ion-toolbar>
     <!-- If Side menu is used-->
     <ion-buttons *ngIf="GlobalFields.site_details.navigationType==2"  slot="start">
-      <ion-menu-button style="color: #ffffff"></ion-menu-button>
+      <ion-menu-button style="color: #00ffff"></ion-menu-button>
     </ion-buttons>
     <div style="margin: 5px; margin-top: 15px; height: 65px; z-index: 100 !important;">
       <ion-row class="filters" dir="{{GlobalFields.getLanguageLayout()}}">

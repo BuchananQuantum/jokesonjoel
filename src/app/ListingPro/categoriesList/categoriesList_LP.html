@@ -3,7 +3,7 @@
     <ion-toolbar>
       <!-- If Side menu is used-->
       <ion-buttons *ngIf="GlobalFields.site_details.navigationType==2" slot="start" style="position: absolute;">
-        <ion-menu-button style="color: #3b3c3c"></ion-menu-button>
+        <ion-menu-button style="color: #00ffff"></ion-menu-button>
       </ion-buttons>
       <ion-segment *ngIf="!GlobalFields.site_details.categoryListTabContent || GlobalFields.site_details.categoryListTabContent == 3" [(ngModel)]="tabShown" style="width: 50%; min-width: fit-content; margin: auto;">
           <ion-segment-button value="1">

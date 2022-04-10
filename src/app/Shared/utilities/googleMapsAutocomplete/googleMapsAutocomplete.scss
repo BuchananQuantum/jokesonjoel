@@ -1,13 +1,17 @@
 
 .googleAutoCompleteInput{
   border: 0;
-  border-bottom: solid 1px #e4e3e6;
+  border-bottom: solid 1px #000000;
   padding: 5px;
   width: 100%;
+  background-color: #00000059;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .openStreetResultsBox{
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.233);
   position: absolute!important;
   z-index: 1000;
   border-radius: 2px;

@@ -17,6 +17,11 @@ body {
 
 .nameLabel div {
   display: none;
+  color: #ffffff;
+}
+
+.item ios {
+  color: #ffffff;
 }
 
 html:not(.hydrated) body {
@@ -548,7 +553,9 @@ ion-button {
 
 .titleSectionFilterBasic {
   display: inline !important;
-  font-size: 12pt;
+  font-size: 16pt;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
 
 .iconSectionFilter {
@@ -560,7 +567,7 @@ ion-button {
 }
 
 .filterSectionBasic {
-  margin-bottom: 5px;
+  margin-bottom: 25px;
 }
 
 
@@ -717,6 +724,12 @@ ion-checkbox {
   color: #ffffff;
 }
 
+.totalPageBackImg {
+  background-image: url('https://unsplash.com/photos/Gk3apXDUZiI');
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+
 
 .card-content-md {
   line-height: 1.2;
@@ -731,10 +744,10 @@ ion-checkbox {
 
 
 ion-input {
-  border-bottom: solid 1px #262527;
-  font-size: 12pt !important;
-  font-style: italic;
-  color: #c2bed8 !important;
+  border-bottom: solid 1px #181718;
+  font-size: 16pt !important;
+  font-style: oblique;
+  color: #ffffff !important;
   font-weight: 600;
 }
 
@@ -746,11 +759,30 @@ ion-select {
   padding-right: 10px;
 }
 
+.logo-header {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 600;
+  font-stretch: ultra-expanded;
+  font-variant-caps: titling-caps;
+  margin-bottom: 15px;
+
+}
+.description {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
 .listCard {
   margin-bottom: 10px;
-  /*height: 225px !important;*/
+  height: 225px !important;
   width: 100%;
   box-shadow: none !important;
+  background-color: #000000;
+}
+.listcard img {
+  height: 190px;
 }
 
 .listCardNoFixedHeight {
@@ -1080,6 +1112,54 @@ page-listingList {
   max-width: none !important;
 }
 
+.menuItem {
+  color: #ffffff;
+  font-weight: 600;
+}
+.titleSectionFilterBasic {
+  color: #ffffff;
+}
+
+.menuItem:hover {
+  color: #ffffff;
+}
+
+.menuItem img {
+  display: none;
+}
+
+.sc-ion-select-popover button {
+  color: chartreuse;
+  font-weight: 600;
+}
+
+.typeTitle {
+  color: chartreuse;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.title-default {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.reviewCounterLittle {
+  color: chartreuse;
+  font-weight: 600;
+  font-size: 16px;
+
+}
+.card-content-md p {
+  font-size: 20px;
+
+}
+.listingLocation {
+  font-zie: 16;
+  font-weight: 600;
+}
+
 .backImgListCacheRTL {
   position: relative !important;
   left: 50% !important;
@@ -1089,6 +1169,9 @@ page-listingList {
   -webkit-transform: translateY(-50%) translateX(-50%) !important;
 }
 
+.cardReview {
+  display: none;
+}
 
 .imgAirbnbHomeType {
   width: 100% !important;
@@ -1126,9 +1209,7 @@ page-listingList {
 }
 
 .mylistingHomeImgCached {
-  width: auto !important;
-  height: 100% !important;
-  max-width: unset !important;
+  display: none;
 }
 
 .listingPageImgMyListingCached {
@@ -1360,9 +1441,14 @@ ion-item {
 .md.header-collapse-condense-inactive:not(.header-collapse-condense) ion-toolbar.in-toolbar ion-title, .header-collapse-condense-inactive:not(.header-collapse-condense) ion-toolbar.in-toolbar ion-buttons.buttons-collapse {
   opacity: 1 !important;
   pointer-events: none;
+  color: #ffffff;
 }
 
 /*To make the side menu working*/
 .split-pane-side {
   display: block !important;
+}
+
+.cards-bg hydrated md social-cards {
+  background-color: #000000;
 }

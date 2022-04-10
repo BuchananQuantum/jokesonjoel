@@ -5,7 +5,9 @@
     <ion-buttons slot="start">
       <ion-menu-button style="color: #3b3c3c"></ion-menu-button>
     </ion-buttons>
-    <div *ngIf="GlobalFields.site_details.logoUrl" style="text-align: center; width: 100%"><img [src]="GlobalFields.site_details.logoUrl" style="height: 38px; width: auto; max-width: none !important;"></div>
+    <div *ngIf="GlobalFields.site_details.logoUrl" style="text-align: center; width: 100%">
+    <h2 class="logo-header">UberBooty</h2>
+    </div>
     <ion-title *ngIf="!GlobalFields.site_details.logoUrl">{{appName}}</ion-title>
     <ion-buttons slot="end">
       <button class="btn-search-header" (click)="openModalSearch()" dir="{{GlobalFields.getLanguageLayout()}}"><i class="fas fa-search"></i></button>
@@ -92,7 +94,7 @@
     </div>
 
   <!-- MyListing type home with custom search -->
-  <div *ngIf="GlobalFields.site_details.homeType == 2 && GlobalFieldsMyListing.selectedTypeDetail" class="totalPageBackImg ">
+  <div *ngIf="GlobalFields.site_details.homeType == 2 && GlobalFieldsMyListing.selectedTypeDetail" class="searchBackground ">
 
       <img-loader [src]="GlobalFieldsMyListing.selectedTypeDetail.img_cover" useImg [imgAttributes]="getImgCachedClass('imgCachedAsBackground shadedImgCached mylistingHomeImgCached')"></img-loader>
 

@@ -168,10 +168,10 @@
 .descriptionTitle {
   margin: 0px !important;
   word-wrap: break-word !important;
-  font-size: 14px !important;
-  font-weight: 500;
+  font-size: 16px !important;
+  font-weight: 600;
   line-height: 1.4444444444444444em !important;
-  color: #484848 !important;
+  color: #ffffff !important;
   padding: 5px;
   text-transform: uppercase;
 }
@@ -179,9 +179,9 @@
 .description {
   margin: 0px !important;
   font-size: 14px !important;
-  font-weight: 400 !important;
+  font-weight: 600 !important;
   line-height: 1.4em !important;
-  color: #484848 !important;
+  color: #ffffff !important;
   padding: 5px;
   white-space: pre-wrap;
   padding-left: 10px;
@@ -284,6 +284,9 @@ ion-content .scroll-content {
   margin-left: 0px;
   margin-right: 10px;
 }
+main {
+  background-color: #000000;
+}
 
 .reviewsLabelHeader {
   text-align: right;
@@ -297,6 +300,12 @@ ion-content .scroll-content {
   text-align: right;
   margin-top: -20px;
 
+}
+
+.labelHeader a {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 3px;
 }
 
 .fastBtnPaddingLeft{
