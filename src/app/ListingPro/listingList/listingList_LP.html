@@ -1,0 +1,129 @@
+<!-- Box Type '1' or Box with logo Type '3'-->
+
+<ion-card *ngIf="type!='2'" [className]="getCardClass()" (click)="getListingDetails(listing)" dir="{{GlobalFields.getLanguageLayout()}}" style="height: auto; margin: 0px !important; ">
+    <!-- Img -->
+    <div [class.backImgBigger]="!little && type=='1' && search" [class.backImgLittle]="little" [class.backImg]="!little && type=='1' && (!search || GlobalFields.isWhiteBackground())"
+         [class.backImgSquaredAndLogo]="type=='3'" dir="{{GlobalFields.getLanguageLayout()}}">
+        <img-loader *ngIf="listing.gallery" [src]="getListingImg(listing)" useImg [imgAttributes]="getImgCachedClass(type)"></img-loader>
+    </div>
+    <!-- White content -->
+    <ion-card-content [class.whiteContentBoxStyleOnWhiteBack]="type=='1'" [class.whiteContentBoxLogoStyle]="type=='3'" dir="{{GlobalFields.getLanguageLayout()}}">
+        <!-- Logo -->
+        <div *ngIf="type=='3' && listing.post_meta.business_logo" class="logoCircleImg">
+            <img-loader [src]="listing.post_meta.business_logo" useImg [imgAttributes]="getImgCachedClassByClass('logoImgCache')"></img-loader>
+        </div>
+        <!-- Type & reviews -->
+        <ion-grid *ngIf="listing.post_meta" class="listingType" dir="{{GlobalFields.getLanguageLayout()}}">
+          <ion-row *ngIf="!little">
+              <ion-col size="12" class="typeTitle">
+                  <span *ngIf="listing.category" style="font-weight: 400;">
+                    <img *ngIf="listing.category.icon1" src="{{listing.category.icon1}}" style="height: 13px; margin-right: 5px;">
+                    {{listing.category.name}}</span>
+                  <!-- Featured -->
+                  <span *ngIf="listing.campaing_ads_enabled" class="sponsoredAirbnb">{{'FEATURED' | translate}}</span>
+                  <!-- reviews-->
+                  <span class="reviewCounterLittle" *ngIf="!listing.reviews || listing.reviews.review_count == 0">0 {{ 'REVIEWS' | translate }}</span>
+                  <span class="reviewCounterLittle" *ngIf="listing.reviews && listing.reviews.review_count > 0">
+                      <i class="fas fa-star starReviewAirbnb"  style="float: initial; color: #ffc106"></i>
+                      <span class="reviewCounterLittle" style="float: initial; font-size: small;"> {{listing.reviews.listing_rate}}</span>
+                      <span class="reviewCounterLittle"  style="float: initial; font-weight: 200;"> ({{listing.reviews.review_count}})</span>
+                  </span>
+              </ion-col>
+          </ion-row>
+        </ion-grid>
+        <!-- Title & Location-->
+        <div [class.titleLocationLeft]="type=='1'" [class.titleLocationCenter]="type=='3'">
+            <p [class.listingTitleListListingPro]="!little" [class.listingTitleListListingProLittle]="little" dir="{{GlobalFields.getLanguageLayout()}}">{{listing.post_title}}  <i class="fas fa-check-circle" *ngIf="isClaimed()" style="color: #03A9F4;"></i> </p>
+            <p class="listingLocation" dir="{{GlobalFields.getLanguageLayout()}}">
+              <span *ngIf="listing.location && listing.location.length>0" ><i class="fas fa-map-marker-alt"></i> {{listing.location[0].name}}</span>
+              <span *ngIf="!listing.location || listing.location.length==0 && listing.post_meta && listing.post_meta.gAddress" ><i class="fas fa-map-marker-alt"></i> {{listing.post_meta.gAddress}}</span>
+
+              <!-- Prices -->
+              <span class="listingType" *ngIf="listing.post_meta && listing.post_meta.price_status && listing.post_meta.price_status!='notsay'">
+              <div class="verticalDivisor"></div>
+              <span *ngIf="listing.post_meta.price_status=='inexpensive'">{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}</span>
+              <span *ngIf="listing.post_meta.price_status=='moderate'">{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}</span>
+              <span *ngIf="listing.post_meta.price_status=='pricey'">{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}</span>
+              <span *ngIf="listing.post_meta.price_status=='ultra_high_end'">{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}</span>
+
+              <span *ngIf="listing.post_meta.list_price"> {{listing.post_meta.list_price}}</span>
+
+              </span>
+
+            </p>
+        </div>
+        <ion-row *ngIf="little" style="margin-top:5px">
+          <ion-col size="12" class="typeTitle">
+            <!-- Featured -->
+            <span *ngIf="listing.campaing_ads_enabled" class="sponsoredAirbnb">{{'FEATURED' | translate}}</span>
+            <!-- reviews-->
+            <span class="reviewCounterLittle" *ngIf="!listing.reviews || listing.reviews.review_count == 0">0 {{ 'REVIEWS' | translate }}</span>
+            <span class="reviewCounterLittle" *ngIf="listing.reviews && listing.reviews.review_count > 0">
+                              <i class="fas fa-star starReviewAirbnb"  style="float: initial; color: #ffc106"></i>
+                              <span class="reviewCounterLittle" style="float: initial; font-size: small;"> {{listing.reviews.listing_rate}}</span>
+                              <span class="reviewCounterLittle"  style="float: initial; font-weight: 200;"> ({{listing.reviews.review_count}})</span>
+                          </span>
+          </ion-col>
+        </ion-row>
+    </ion-card-content>
+</ion-card>
+
+
+
+
+
+
+
+<!-------------------- List type '2' -------------------->
+<ion-row *ngIf="type=='2'" [className]="'rowListType' + isWhiteBackgroundBoxShadow()"  (click)="getListingDetails(listing)"  dir="{{GlobalFields.getLanguageLayout()}}">
+    <ion-col size="4" style="padding: 0 !important;">
+
+        <div class="backImgList" *ngIf="GlobalFields.getLanguageLayout()=='ltr'">
+            <img-loader *ngIf="listing.gallery" [src]="getListingImg(listing)" useImg [imgAttributes]="getImgCachedClass(type)"  [class.imgLoaderRTL]="GlobalFields.getLanguageLayout()=='rtl'"></img-loader>
+        </div>
+        <div class="backImgList" *ngIf="GlobalFields.getLanguageLayout()=='rtl'">
+            <div class="imgRTLList" [style.background]="'url(' +getListingImg(listing)+')'"></div>
+        </div>
+
+    </ion-col>
+    <ion-col size="8" style="padding-top: 10px;">
+        <div class="listingType" *ngIf="listing.post_meta">
+          <span *ngIf="listing.category">
+            <img *ngIf="listing.category.icon1" src="{{listing.category.icon1}}" style="height: 13px; margin-right: 5px;">
+            {{listing.category.name}}
+          </span>
+          <!-- reviews-->
+            <span class="reviewCounterLittleList" *ngIf="!listing.reviews || listing.reviews.review_count == 0"   dir="{{GlobalFields.getLanguageLayout()}}">0 {{'REVIEWS' | translate}}</span>
+            <div class="reviewsLabelHeaderLittle" *ngIf="listing.reviews && listing.reviews.review_count > 0">
+                <label class="reviewsBoxList" dir="{{GlobalFields.getLanguageLayout()}}">
+                    <label class="reviewScoreLittleList">{{getTruncatedDecimal(listing.reviews.listing_rate)}}</label>
+                    <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='ltr'" name="star" class="starReviewList" ></ion-icon>
+                    <label class="reviewCounterLittleList">{{'ON' | translate}} {{listing.reviews.review_count}} {{'REVIEWS' | translate}}</label>
+                </label>
+            </div>
+        </div>
+        <p class="listingTitleListListingPro" style="line-height: 16px !important;" >{{listing.post_title}}  <i class="fas fa-check-circle" *ngIf="isClaimed()" style="color: #03A9F4;"></i></p>
+        <p class="listingAddressLittle" dir="{{GlobalFields.getLanguageLayout()}}">
+          <span *ngIf="listing.location && listing.location.length>0" ><i class="fas fa-map-marker-alt"></i> {{listing.location[0].name}}</span>
+          <span *ngIf="!listing.location || listing.location.length==0 && listing.post_meta && listing.post_meta.gAddress"><i class="fas fa-map-marker-alt"></i> {{listing.post_meta.gAddress}}</span>
+
+          <!-- Prices -->
+          <span class="listingType" *ngIf="listing.post_meta && listing.post_meta.price_status && listing.post_meta.price_status!='notsay'">
+            <div class="verticalDivisor"></div>
+            <span *ngIf="listing.post_meta.price_status=='inexpensive'">{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}</span>
+            <span *ngIf="listing.post_meta.price_status=='moderate'">{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}</span>
+            <span *ngIf="listing.post_meta.price_status=='pricey'">{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}</span>
+            <span *ngIf="listing.post_meta.price_status=='ultra_high_end'">{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}</span>
+
+            <span *ngIf="listing.post_meta.list_price"> {{listing.post_meta.list_price}}</span>
+          </span>
+
+        </p>
+      <!-- Sponsored -->
+        <div class="boltIconList" *ngIf="listing.campaing_ads_enabled"><i class="fas fa-bolt"></i></div>
+    </ion-col>
+</ion-row>
+
+
+
+

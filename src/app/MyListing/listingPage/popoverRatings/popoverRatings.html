@@ -1,0 +1,32 @@
+<!-- ML Custom ratings table -->
+<div *ngIf="GlobalFieldsMyListing.customRatingsSelected" style="padding: 5px; background-color: white;">
+  <span *ngFor="let rate of GlobalFieldsMyListing.customRatingsSelected" >
+    <ion-row  class="fontFamily tableRowThinner">
+      <ion-col col-4 style="text-transform: capitalize;">
+        {{getNiceStringFromKey(rate.key)}}
+      </ion-col>
+      <ion-col col-8 style="text-align: right">
+        <label class="reviewsBox" style="position: inherit">
+          {{getTruncatedDecimal(rate.value)}}
+        </label>
+        </ion-col>
+    </ion-row>
+  </span>
+</div>
+
+
+<!-- LP Custom ratings table -->
+<div *ngIf="GlobalFieldsListingPro.customRatingsSelected" style="padding: 5px; background-color: white;">
+  <span *ngFor="let rate of GlobalFieldsListingPro.customRatingsSelected" >
+    <ion-row  class="fontFamily tableRowThinner">
+      <ion-col col-4 style="text-transform: capitalize;">
+        {{getNiceStringFromKey(rate.key)}}
+      </ion-col>
+      <ion-col col-8 style="text-align: right">
+        <label class="reviewsBox" style="position: inherit">
+          {{getTruncatedDecimal(rate.value)}}
+        </label>
+        </ion-col>
+    </ion-row>
+  </span>
+</div>

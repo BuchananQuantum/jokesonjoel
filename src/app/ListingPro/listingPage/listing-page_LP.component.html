@@ -1,0 +1,620 @@
+<ion-header (swiperight)="closeModal()"   dir="{{GlobalFields.getLanguageLayout()}}">
+  <ion-toolbar style="background: linear-gradient( to bottom, #00000057, transparent );" >
+    <div [class]="GlobalFields.getLanguageLayout()=='ltr' ? 'btnFloatingLeftDiv': 'btnFloatingRightDiv'">
+      <button [class]="GlobalFields.site_details.headerBtnListingPageStyle == 2 ? 'btnFloatingWhite' : 'btnFloating'" (click)="closeModal()">
+        <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='ltr'" name="arrow-back"></ion-icon>
+        <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='rtl'" name="arrow-forward"></ion-icon>
+        <!--<span class="swipe">{{ 'SWIPE' | translate }}</span> -->
+      </button>
+
+    </div>
+    <div [class]="GlobalFields.getLanguageLayout()=='ltr' ? 'btnFloatingRightDiv': 'btnFloatingLeftDiv'" *ngIf="GlobalFieldsListingPro.selectedListing">
+      <button [class]="GlobalFields.site_details.headerBtnListingPageStyle == 2 ? 'btnFloatingWhite' : 'btnFloating'" (click)="share()">
+        <i class="far fa-share-square"></i>
+      </button>
+      <button [class]="GlobalFields.site_details.headerBtnListingPageStyle == 2 ? 'btnFloatingWhite' : 'btnFloating'" *ngIf="GlobalFields.isLoggedIn" (click)="writeReview()">
+        <i class="far fa-comment-alt"></i>
+      </button>
+      <button [class]="GlobalFields.site_details.headerBtnListingPageStyle == 2 ? 'btnFloatingWhite' : 'btnFloating'" *ngIf="GlobalFields.isLoggedIn &&  GlobalFieldsListingPro.selectedListing">
+        <i class="fas fa-heart" [class.fullHearth]="GlobalFieldsListingPro.selectedListing.isBookmarked" (click)="GlobalFieldsListingPro.selectedListing.isBookmarked ? undoBookmark() : doBookmark()"></i>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
+
+<ion-content *ngIf="GlobalFieldsListingPro.selectedListing && iniFinished && GlobalFieldsListingPro.selectedListing.post_meta" class="topContent"  [ngStyle]="GlobalFields.getBodyColorBackgroundJson()"  dir="{{GlobalFields.getLanguageLayout()}}">
+
+
+
+  <div style="position: fixed; height: 90%; z-index: 1; width: 10%" (swiperight)="closeModal()" (swipeleft)="closeModal()"></div>
+
+<!------------ AIRBNB STYLE ------ ------>
+  <span *ngIf="GlobalFields.site_details.listingPageType == 1">
+    <div swipe-vertical (swipedown)="closeModal()" class="postImg" [style.background]="getBackground(GlobalFieldsListingPro.selectedListing)"></div>
+  </span>
+<!------------END AIRBNB STYLE ------------>
+
+<!------------ LISTINGPRO STYLE ------------>
+
+  <span *ngIf="GlobalFields.site_details.listingPageType == 2">
+      <!--  <div class="postImgVertical" [style.background]="getBackgroundDarker(GlobalFieldsListingPro.selectedListing)"> -->
+        <div class="postImgVertical">
+
+          <img class="listingPageImgMyListingCached" [src]="getBackgroundDarkerCached(GlobalFieldsListingPro.selectedListing)">
+          <!--<img-loader [src]="getBackgroundDarkerCached(GlobalFieldsListingPro.selectedListing)" useImg [imgAttributes]="getImgCachedClass('listingPageImgMyListingCached')"></img-loader> -->
+
+
+          <div class="titleInTheMiddle">
+              <!--logo-->
+            <div *ngIf="GlobalFieldsListingPro.selectedListing.post_meta && GlobalFieldsListingPro.selectedListing.post_meta.business_logo" class="postLogoImgCentered"
+                 [style.background]="'url(' + GlobalFieldsListingPro.selectedListing.post_meta.business_logo + ')'"></div>
+
+            <div *ngIf="!GlobalFieldsListingPro.selectedListing.post_meta.business_logo" class="postLogoImgCentered"></div>
+
+            <!-- Title -->
+            <div class=""></div>
+            <div class="listingPageTitleWhite">{{GlobalFieldsListingPro.selectedListing.post_title}} <i class="fas fa-check-circle" *ngIf="isClaimed()" style="color: #03A9F4;"></i> </div>
+
+            <!-- reviews numb-->
+            <br>
+            <span class="reviewCounterWhite" *ngIf="!GlobalFieldsListingPro.selectedListing.reviews || GlobalFieldsListingPro.selectedListing.reviews.review_count == 0">{{ 'NO_REVIEWS' | translate }}</span>
+            <div *ngIf="GlobalFieldsListingPro.selectedListing.reviews.review_count && GlobalFieldsListingPro.selectedListing.reviews.review_count > 0">
+              <span *ngFor="let star of getStartsHtml(GlobalFieldsListingPro.selectedListing.reviews.listing_rate)">
+                <ion-icon name='star{{star}}'style='float: initial; font-size: 20px'></ion-icon>
+              </span>
+              <div class="reviewCounterWhite"> {{GlobalFieldsListingPro.selectedListing.reviews.review_count}} {{ 'REVIEW_REVIEWS' | translate }}</div>
+            </div>
+
+            <br>
+            <!-- Tagline -->
+            <div class="listingPageSubtitleWhite" *ngIf="GlobalFieldsListingPro.selectedListing.post_meta && GlobalFieldsListingPro.selectedListing.post_meta.tagline_text">
+              {{GlobalFieldsListingPro.selectedListing.post_meta.tagline_text}}
+            </div>
+
+          </div>
+        </div>
+  </span>
+
+<!------------END MYLISTING STYLE ------------>
+
+
+
+
+  <ion-card-content style="padding: 5px; margin-bottom: 100px">
+
+<!------------ AIRBNB STYLE ------------>
+  <span *ngIf="GlobalFields.site_details.listingPageType == 1">
+      <!--logo-->
+      <div *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.business_logo" class="postLogoImg"
+           [style.background]="'url(' + GlobalFieldsListingPro.selectedListing.post_meta.business_logo + ')'"></div>
+      <div *ngIf="!GlobalFieldsListingPro.selectedListing.post_meta.business_logo" class="postLogoImgPlaceholder"></div>
+
+      <!-- reviews numb-->
+      <div class="reviewsLabelHeader">
+        <span class="reviewCounter" *ngIf="!GlobalFieldsListingPro.selectedListing.reviews || GlobalFieldsListingPro.selectedListing.reviews.review_count == 0">{{ 'NO_REVIEWS' | translate }}</span>
+        <div *ngIf="GlobalFieldsListingPro.selectedListing.reviews.review_count && GlobalFieldsListingPro.selectedListing.reviews.review_count > 0">
+          <label class="reviewsBox">
+            {{getTruncatedDecimal(GlobalFieldsListingPro.selectedListing.reviews.listing_rate)}}
+            <ion-icon name="star" class="starReview"></ion-icon>
+          </label>
+          <div class="reviewCounter"> {{GlobalFieldsListingPro.selectedListing.reviews.review_count}} {{ 'REVIEW_REVIEWS' | translate }}</div>
+        </div>
+      </div>
+      <div class="listingPageType"></div>
+      <br *ngIf="GlobalFieldsListingPro.selectedListing.post_meta && GlobalFieldsListingPro.selectedListing.post_meta.business_logo">
+      <p class="listingPageTitle">{{GlobalFieldsListingPro.selectedListing.post_title}} <i class="fas fa-check-circle" *ngIf="isClaimed()" style="color: #03A9F4;"></i> </p>
+      <div class="listingPageSubtitle" *ngIf="GlobalFieldsListingPro.selectedListing.post_meta && GlobalFieldsListingPro.selectedListing.post_meta.tagline_text">
+        {{GlobalFieldsListingPro.selectedListing.post_meta.tagline_text}}
+      </div>
+    </span>
+<!------------END AIRBNB STYLE ------------>
+
+    <div class="divisor" *ngIf="showContactInfo() && GlobalFieldsListingPro.selectedListing.post_meta && GlobalFields.isWhiteBackground()"></div>
+    <div  [className]="getClassContainer()" *ngIf="showContactInfo() && (GlobalFieldsListingPro.selectedListing.post_meta.gAddress ||
+    GlobalFieldsListingPro.selectedListing.post_meta.phone || GlobalFieldsListingPro.selectedListing.post_meta.email)">
+      <b class="descriptionTitle">
+        <i class="far fa-address-card faIconGoodPosition"></i>
+        {{'CONTACT_INFO' | translate}}</b><br><br>
+      <ion-row *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.gAddress">
+        <div class=" iconCircleBox">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+          <p class="labelHeader">
+              <a (click)="goToNavigatorAction(GlobalFieldsListingPro.selectedListing.post_meta.gAddress)"  style="width: 100%; color: inherit; ">
+
+              {{GlobalFieldsListingPro.selectedListing.post_meta.gAddress}}
+            </a>
+          </p>
+      </ion-row>
+      <ion-row  *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.phone">
+        <div class="iconCircleBox">
+          <i class="fas fa-phone"></i>
+        </div>
+          <p  class="labelHeader" (click)="callNumberAction(GlobalFieldsListingPro.selectedListing.post_meta.phone)">{{GlobalFieldsListingPro.selectedListing.post_meta.phone}}</p>
+      </ion-row>
+      <ion-row *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.email">
+          <div class=" iconCircleBox">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <p class="labelHeader">
+            <a (click)="openLink('mailto:' + GlobalFieldsListingPro.selectedListing.post_meta.email + '?Subject=My%20Custom%20Subject')" style="width: 100%; color: inherit; ">
+              {{GlobalFieldsListingPro.selectedListing.post_meta.email}}
+            </a>
+          </p>
+      </ion-row>
+    </div>
+
+
+    <!-- Category -->
+    <div class="divisor" *ngIf="GlobalFieldsListingPro.selectedListing.category &&  GlobalFields.isWhiteBackground()" ></div>
+    <div [className]="getClassContainer()" *ngIf="GlobalFieldsListingPro.selectedListing.category">
+      <b class="descriptionTitle">
+        <i class="far fa-bookmark faIconGoodPosition"></i>
+        {{'CATEGORIES' | translate}}
+      </b>
+      <div  class="listCategories">
+        <span style="font-size: 9pt">
+          <i *ngIf="!GlobalFieldsListingPro.selectedListing.category.icon1" class="fas fa-bookmark iconCircleBoxCatRegions" dir="{{GlobalFields.getLanguageLayout()}}"></i>
+          <img *ngIf="GlobalFieldsListingPro.selectedListing.category.icon1" src="{{GlobalFieldsListingPro.selectedListing.category.icon1}}" class="iconImgBoxCatRegions" dir="{{GlobalFields.getLanguageLayout()}}">
+          {{GlobalFieldsListingPro.selectedListing.category.name}}
+        </span>
+      </div>
+    </div>
+
+
+    <!-- Regions -->
+    <div class="divisor" *ngIf="GlobalFieldsListingPro.selectedListing.location && GlobalFieldsListingPro.selectedListing.location.length>0 && GlobalFields.isWhiteBackground()"></div>
+    <div [className]="getClassContainer()" *ngIf="GlobalFieldsListingPro.selectedListing.location && GlobalFieldsListingPro.selectedListing.location.length>0">
+      <b class="descriptionTitle">
+        <i class="fas fa-map-marker faIconGoodPosition"></i>
+        {{'REGIONS' | translate}}
+      </b>
+      <div class="listCategories">
+          <span *ngFor="let region of GlobalFieldsListingPro.selectedListing.location"  style="font-size: 9pt">
+            <i *ngIf="!region.icon" class="fas fa-map-marker iconCircleBoxCatRegions" dir="{{GlobalFields.getLanguageLayout()}}"></i>
+            <i *ngIf="region.icon" class="{{region.icon + ' iconCircleBoxCatRegions'}} " dir="{{GlobalFields.getLanguageLayout()}}"></i>
+            {{region.name}}
+          </span>
+      </div>
+    </div>
+
+
+    <div class="divisor" *ngIf="GlobalFieldsListingPro.selectedListing.post_meta && GlobalFields.isWhiteBackground()"></div>
+
+    <div  [className]="getClassContainer()" *ngIf="GlobalFieldsListingPro.selectedListing.post_content">
+     <b class="descriptionTitle">
+       <i class="fas fa-align-left faIconGoodPosition"></i>
+       {{ 'DESCRIPTION' | translate }}</b><br>
+      <p class="description" [innerHTML]="GlobalFieldsListingPro.selectedListing.post_content"></p>
+    </div>
+
+    <!-- Gallery -->
+    <div class="divisor" *ngIf="GlobalFieldsListingPro.selectedListing.gallery && GlobalFieldsListingPro.selectedListing.gallery.main.length>0 && GlobalFields.isWhiteBackground()"></div>
+    <div [className]="getClassContainer()"  *ngIf="GlobalFieldsListingPro.selectedListing.gallery.main && GlobalFieldsListingPro.selectedListing.gallery.main.length>0">
+      <div class="sliderWithCSS">
+        <div *ngFor="let media of GlobalFieldsListingPro.selectedListing.gallery.main; let i = index" class="galleryImg" [style.background]="'url(' +media.full+')'" (click)="openImgPopover(media.full)">
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Video -->
+    <div class="divisor" *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.video && GlobalFields.isWhiteBackground()"></div>
+    <div [className]="getClassContainer()" *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.video && GlobalFieldsListingPro.selectedListing.post_meta.video!=''">
+      <b class="descriptionTitle">
+        <i class="fab fa-youtube faIconGoodPosition"></i>
+        Video
+      </b>
+      <div class="labelCustomDetails" style="text-align: right">
+        <a *ngIf="!youtubeUrl" (click)="openLink(GlobalFieldsListingPro.selectedListing.post_meta.video)"> Youtube <i class="fas fa-external-link-alt"></i></a>
+        <iframe *ngIf="youtubeUrl" webkitallowfullscreen mozallowfullscreen allowfullscreen
+                sandbox="allow-scripts allow-top-navigation allow-pointer-lock allow-forms allow-same-origin allow-popups"
+                style="width: 100%; height: 100%; border: none"
+                [src]="youtubeUrl" frameborder="0"></iframe>
+      </div>
+    </div>
+
+
+  <!-- Custom taxonomies
+    <span *ngIf="custTaxonomies && custTaxonomies.length>0">
+      <span *ngFor="let custTax of custTaxonomies">
+        <div class="divisor" *ngIf="custTax.show_in_detail_view && GlobalFields.isWhiteBackground()"></div>
+        <div *ngIf="custTax.show_in_detail_view" [className]="getClassContainer()">
+           <b class="descriptionTitle">
+            {{custTax.label}}
+          </b><br>
+          <div  class="listCategories">
+            <span *ngFor="let val of custTax.value" style="font-size: 9pt">
+              <i *ngIf="val.icon" class="{{val.icon + ' iconCircleBoxCatRegions'}} " dir="{{GlobalFields.getLanguageLayout()}}"></i>
+              <i *ngIf="!val.icon" class="fas fa-hashtag iconCircleBoxCatRegions" dir="{{GlobalFields.getLanguageLayout()}}"></i>
+              {{val.name}}
+            </span>
+          </div>
+        </div>
+      </span>
+    </span>
+    -->
+
+   <!-- Custom Related Listings
+    <span *ngIf="custRelatedListings && custRelatedListings.length>0">
+      <span *ngFor="let custRelatedListing of custRelatedListings">
+        <div class="divisor"></div>
+        <div [className]="getClassContainer()">
+          <b class="descriptionTitle">
+            {{custRelatedListing.label}}
+          </b>
+          <span *ngFor="let listing of custRelatedListing.listings">
+            <page-listingList [listing]="listing" [type]="'2'"  [search]="true" (click)="closeModal()"></page-listingList>
+          </span>
+          <span *ngIf="custRelatedListing.listings.length==0">
+            0 {{'LISTINGS' | translate}}
+          </span>
+        </div>
+      </span>
+    </span>
+    -->
+
+    <!-- Table of custom fields -->
+    <div class="divisor" *ngIf="custFields && custFields.length>0 && GlobalFields.isWhiteBackground()"></div>
+    <div [className]="getClassContainer()"  *ngIf="custFields && custFields.length>0">
+      <b class="descriptionTitle">
+        <i class="fas fa-grip-vertical faIconGoodPosition"></i>
+        {{ 'DETAILS' | translate }} </b><br><br>
+      <span *ngFor="let field of custFields" >
+        <ion-row  class="fontFamily tableRow">
+          <!-- Not an Html field value -->
+          <ion-col col-4 style="text-transform: capitalize; padding-top: 10px;" *ngIf="!isHTML(field.value)">
+            <span *ngIf="field.key!='price'">{{field.label}}</span>
+            <span *ngIf="field.key=='price'">{{'PRICE' | translate}}</span>
+          </ion-col>
+          <!-- not html -->
+          <ion-col col-8 style="text-align: right" *ngIf="!isHTML(field.value)">
+            <p class="labelCustomDetails" *ngIf="!isArray(field.value)">
+             {{field.value}}
+            </p>
+            <div class="labelCustomDetails" *ngIf="isArray(field.value)">{{getStringFromArray(field.value)}}</div>
+          </ion-col>
+          <!-- Html field, full width-->
+          <ion-col *ngIf="isHTML(field.value)"  col-12>
+            {{getNiceString(field.key)}} <br><br>
+            <div class="labelHTML" *ngIf="isHTML(field.value) && !isURL(field.value)" [innerHTML]="field.value"></div>
+          </ion-col>
+        </ion-row>
+      </span>
+    </div>
+
+    <!-- Map -->
+    <div class="divisor"  *ngIf="fieldToBeShown('job_location') && GlobalFieldsListingPro.selectedListing.post_meta.gAddress && showContactInfo() && GlobalFields.isWhiteBackground()"></div>
+    <div [className]="getClassContainer()" *ngIf="fieldToBeShown('job_location') && GlobalFieldsListingPro.selectedListing.post_meta.gAddress && showContactInfo()">
+      <a (click)="goToNavigatorAction(GlobalFieldsListingPro.selectedListing.post_meta.gAddress)">
+        <b class="descriptionTitle">
+          <i class="fas fa-map-marked-alt faIconGoodPosition"></i>
+          {{ 'WHERE' | translate }}
+          <span style="float: right; font-weight: 200; font-size: small; margin-right: 10px"> {{ 'GET_DIRECTIONS' | translate }}</span>
+        </b><br><br>
+        <img *ngIf="Constants.GoogleMapsKEY && Constants.GoogleMapsKEY != ''" src="{{'https://maps.googleapis.com/maps/api/staticmap?center=' + GlobalFieldsListingPro.selectedListing.post_meta.gAddress +'&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7Clabel:%7C' + GlobalFieldsListingPro.selectedListing.post_meta.gAddress +'&key=' + Constants.GoogleMapsKEY}}">
+        <div style="text-align: right; color: #484848; font-size: small; margin-top: 10px; margin-right: 10px">{{GlobalFieldsListingPro.selectedListing.post_meta.gAddress}}</div>
+      </a>
+    </div>
+
+    <!-- Working hours -->
+    <div class="divisor" *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.business_hours && GlobalFields.isWhiteBackground()"></div>
+    <div  [className]="getClassContainer()" *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.business_hours">
+      <b class="descriptionTitle">
+        <i class="far fa-clock faIconGoodPosition"></i>
+        {{ 'WORK_HOURS' | translate }} </b><br><br>
+      <ion-row *ngFor="let day of daysOfTheWeek; let i = index" class="fontFamily tableRow">
+        <ion-col col-4 style="text-transform: capitalize;">
+          {{daysOfTheWeekLabel[i]}}
+        </ion-col>
+        <ion-col col-8 style="text-align: right">
+          <span *ngIf="!GlobalFieldsListingPro.selectedListing.post_meta.business_hours[day]">{{ 'CLOSED_DAY' | translate }}</span>
+          <span *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.business_hours[day]">
+            <div>{{GlobalFieldsListingPro.selectedListing.post_meta.business_hours[day].open}} - {{GlobalFieldsListingPro.selectedListing.post_meta.business_hours[day].close}}</div>
+           </span>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!-- tags -->
+    <div class="divisor" *ngIf="GlobalFieldsListingPro.selectedListing.tag && GlobalFieldsListingPro.selectedListing.tag.length>0 && GlobalFields.isWhiteBackground()" ></div>
+    <div [className]="getClassContainer()" *ngIf="GlobalFieldsListingPro.selectedListing.tag && GlobalFieldsListingPro.selectedListing.tag.length>0">
+      <b class="descriptionTitle">
+        <i class="fas fa-hashtag faIconGoodPosition"></i>
+        Tags:
+      </b>
+      <div  class="listCategories">
+        <span *ngFor="let tag of GlobalFieldsListingPro.selectedListing.tag" style="font-size: 9pt">
+          <i *ngIf="!tag.icon" class="fas fa-hashtag iconCircleBoxCatRegions" dir="{{GlobalFields.getLanguageLayout()}}"></i>
+          <i *ngIf="tag.icon" class="{{tag.icon + ' iconCircleBoxCatRegions'}} " dir="{{GlobalFields.getLanguageLayout()}}"></i>
+          {{tag.name}}
+        </span>
+      </div>
+    </div>
+
+
+    <!-- features -->
+    <div class="divisor" *ngIf="GlobalFieldsListingPro.selectedListing.feature && GlobalFieldsListingPro.selectedListing.feature.length>0 && GlobalFields.isWhiteBackground()" ></div>
+    <div [className]="getClassContainer()" *ngIf="GlobalFieldsListingPro.selectedListing.feature && GlobalFieldsListingPro.selectedListing.feature.length>0">
+      <b class="descriptionTitle">
+        <i class="fas fa-hashtag faIconGoodPosition"></i>
+        Features:
+      </b>
+      <div  class="listCategories">
+        <span *ngFor="let feat of GlobalFieldsListingPro.selectedListing.feature" style="font-size: 9pt">
+          <i *ngIf="!feat.icon" class="fas fa-hashtag iconCircleBoxCatRegions" dir="{{GlobalFields.getLanguageLayout()}}"></i>
+          <i *ngIf="feat.icon" class="{{feat.icon + ' iconCircleBoxCatRegions'}} " dir="{{GlobalFields.getLanguageLayout()}}"></i>
+          {{feat.name}}
+        </span>
+      </div>
+    </div>
+
+    <!-- Comments Bubble -->
+    <div class="divisor" *ngIf="GlobalFieldsListingPro.selectedListing.reviews && GlobalFieldsListingPro.selectedListing.reviews.reviews && GlobalFieldsListingPro.selectedListing.reviews.reviews.length>0 && GlobalFields.isWhiteBackground()"></div>
+    <div  [className]="getClassContainer()" *ngIf="GlobalFields.site_details.reviewStyle == 1 &&  GlobalFieldsListingPro.selectedListing.reviews.reviews && GlobalFieldsListingPro.selectedListing.reviews.reviews.length>0" class="listCategories">
+      <b class="descriptionTitle">
+        <i class="far fa-star faIconGoodPosition"></i>
+        {{ 'REVIEWS' | translate }}
+      </b>
+      <div style="max-height: 300px; overflow-y: auto;">
+        <ion-grid *ngFor="let comm of GlobalFieldsListingPro.selectedListing.reviews.reviews">
+          <ion-row>
+            <div col-2 style="width: 60px">
+              <img src="{{comm.author_image}}" style="height: 50px; width: 50px; border-radius: 50px; vertical-align: middle;">
+            </div>
+            <ion-col col-6 style="text-transform: capitalize;">
+              <div class="listingTitle">{{comm.author_name}}</div>
+              <div class="listingLocation">{{comm.post_date}}</div>
+            </ion-col>
+            <ion-col col-4 style="text-align: right">
+              <label class="reviewsBox" style="position: inherit">
+                {{comm.rating['general_rating']}}
+                <ion-icon name="star" class="starReview"></ion-icon>
+              </label>
+               <ion-button *ngIf="comm.rating && hasMultipleRatings(comm.rating)"  fill="clear" class="btnRatings"  (click)="openRatingsPopover($event, comm.rating)"><i class="fas fa-chevron-down"></i></ion-button>
+            </ion-col>
+          </ion-row>
+          <ion-row class="fontFamily">
+            <ion-col col-12>
+              <div class="speech-bubble">
+                <div class="commentBox">
+                  <b *ngIf="comm.post_title">{{comm.post_title}} <br></b>
+                  {{comm.post_content}}
+                </div>
+                <img class="imgComments" *ngFor="let img of comm.gallery" src="{{img.full}}" (click)="openImgPopover(img.full)">
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </div>
+
+    <!-- Comments Card-->
+    <div  [className]="getClassContainer()" *ngIf="GlobalFields.site_details.reviewStyle != 1 &&  GlobalFieldsListingPro.selectedListing.reviews &&  GlobalFieldsListingPro.selectedListing.reviews.reviews && GlobalFieldsListingPro.selectedListing.reviews.reviews.length>0" class="listCategories">
+      <b class="descriptionTitle">
+        <i class="far fa-star faIconGoodPosition"></i>
+        {{ 'REVIEWS' | translate }}
+      </b>
+      <div style="max-height: 300px; overflow-y: auto;">
+        <ion-grid *ngFor="let comm of GlobalFieldsListingPro.selectedListing.reviews.reviews" class="cardReview">
+          <ion-row>
+            <div col-2 style="width: 60px">
+              <img src="{{comm.author_image}}" style="height: 50px; width: 50px; border-radius: 50px; vertical-align: middle;">
+            </div>
+            <ion-col col-6 style="text-transform: capitalize;">
+              <div class="listingTitle">{{comm.author_name}}</div>
+              <div class="listingLocation">{{comm.post_date}}</div>
+            </ion-col>
+            <ion-col col-4 style="text-align: right">
+              <label class="reviewsBox" style="position: inherit">
+                {{comm.rating['general_rating']}}
+                <ion-icon name="star" class="starReview"></ion-icon>
+              </label>
+              <ion-button *ngIf="comm.rating && hasMultipleRatings(comm.rating)"  fill="clear" class="btnRatings"  (click)="openRatingsPopover($event, comm.rating)"><i class="fas fa-chevron-down"></i></ion-button>
+            </ion-col>
+          </ion-row>
+          <ion-row class="fontFamily">
+
+            <ion-col col-12>
+              <div>
+                <div class="commentBoxCard">
+                  <b *ngIf="comm.post_title">{{comm.post_title}} <br></b>
+                  {{comm.post_content}}
+                </div>
+              </div>
+              <img class="imgComments" *ngFor="let img of comm.gallery" src="{{img.full}}" (click)="openImgPopover(img.full)">
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <!-- Write a review button -->
+      <div style="width: 100%; margin-top: 10px; display: flex;">
+        <button class="addReview" *ngIf="GlobalFields.isLoggedIn"  (click)="writeReview()" >
+          <i class="far fa-star"></i> {{'WRITE_REVIEW' | translate}}
+        </button>
+        <button class="addReview" *ngIf="!GlobalFields.isLoggedIn" (click)="goToLogin()" >
+          <i class="far fa-star"></i> {{'WRITE_REVIEW' | translate}}
+        </button>
+      </div>
+
+    </div>
+
+
+
+    <!-- Lead form -->
+    <div class="divisor" *ngIf="GlobalFieldsListingPro.selectedListing.lead_gen && GlobalFieldsListingPro.selectedListing.lead_gen.length>0 && GlobalFields.isWhiteBackground()"></div>
+    <div [className]="'leadContainer ' + getClassContainer()" *ngIf="GlobalFieldsListingPro.selectedListing.lead_gen &&  GlobalFieldsListingPro.selectedListing.lead_gen.length>0" class="listCategories">
+      <b class="descriptionTitle">
+        <i class="far fa-envelope faIconGoodPosition"></i>
+        {{'CONTACT_INFO' | translate}}
+      </b>
+      <div *ngIf="!lead_sent">
+        <ion-grid>
+          <ion-row *ngFor="let field of GlobalFieldsListingPro.selectedListing.lead_gen" >
+            <div *ngIf="field.type!='textarea'" col-2 style="width: 40px; line-height: 50px; text-align: center; font-size: 14pt; color: #909090;">
+              <i *ngIf="field.name=='name7'" class="fas fa-user"></i>
+              <i *ngIf="field.name=='phone7'" class="fas fa-phone"></i>
+              <i *ngIf="field.type=='email'" class="fas fa-envelope"></i>
+              <i *ngIf="field.type=='textarea'" class="far fa-comment-dots"></i>
+              <i *ngIf="field.type!='phone7' && field.type!='name7' && field.type!='email'" class="fas fa-pencil"></i>
+              <span *ngIf="field.required==''"> *</span>
+            </div>
+            <ion-col col-10 style="text-transform: capitalize;">
+              <span *ngIf="field.type=='text' || field.type=='email'">
+                <ion-input clearInput placeholder="{{field.placeholder}}" [(ngModel)]="lead[field.name]"></ion-input>
+              </span>
+              <span *ngIf="field.type=='textarea'">
+                <ion-textarea class="textareaEditor" rows="5" cols="20"  placeholder="{{field.placeholder}}" [(ngModel)]="lead[field.name]"></ion-textarea>
+              </span>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <div style="text-align: center">
+          <button class="addReview" (click)="sendLead()" [disabled]="checkIfFieldsMissing()">
+            <i class="far fa-paper-plane"></i> Send
+          </button>
+        </div>
+
+      </div>
+      <div *ngIf="lead_sent" style="text-align: center">
+        <i class="fas fa-check-circle" style="font-size: 48pt; padding: 30px; color: #64c28d;"></i>
+      </div>
+
+    </div>
+
+
+    <!-- FAQs -->
+    <div class="divisor" *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.faqs && GlobalFieldsListingPro.selectedListing.post_meta.faqs.faq.length>0 && GlobalFields.isWhiteBackground()"></div>
+    <div  [className]="getClassContainer()" *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.faqs && GlobalFieldsListingPro.selectedListing.post_meta.faqs.faq.length>0">
+      <b class="descriptionTitle">
+        <i class="far fa-clock faIconGoodPosition"></i>
+        FAQs </b><br><br>
+      <ion-row *ngFor="let faq of GlobalFieldsListingPro.selectedListing.post_meta.faqs.faq; let i = index" class="fontFamily tableRow">
+        <div class="accordionContainer">
+          <button class="accordion" (click)="selectFAQIndex(i)">{{faq}}</button>
+          <div class="panel" [class.accordionOpen]="selectedAccoIndex==i">
+            <p>{{GlobalFieldsListingPro.selectedListing.post_meta.faqs.faqans[i]}}</p>
+          </div>
+        </div>
+      </ion-row>
+    </div>
+
+
+    <!-- Related Ads listings -->
+    <div class="divisor" *ngIf="related_ads_listing && related_ads_listing.length>0 && GlobalFields.isWhiteBackground()"></div>
+    <div  class="sectionContainer" *ngIf="related_ads_listing && related_ads_listing.length>0">
+      <b class="descriptionTitle">
+        Ads
+      </b>
+      <div *ngFor="let listing of related_ads_listing;  let i = index" style="margin:5px">
+        <listingList_LP [listing]="listing" [type]="'2'"  [search]="true" (click)="closeModal()"></listingList_LP>
+      </div>
+    </div>
+
+    <!-- Related Recent listings -->
+    <div class="divisor" *ngIf="related_recent_listing && related_recent_listing.length>0 && GlobalFields.isWhiteBackground()"></div>
+    <div  class="sectionContainer" *ngIf="related_recent_listing && related_recent_listing.length>0">
+      <b class="descriptionTitle">
+        {{'RECENT' | translate}}
+      </b>
+      <div *ngFor="let listing of related_recent_listing;  let i = index" style="margin:5px">
+        <listingList_LP [listing]="listing" [type]="'2'"  [search]="true" (click)="closeModal()"></listingList_LP>
+      </div>
+    </div>
+
+  </ion-card-content>
+
+
+</ion-content>
+
+
+
+
+
+
+<ion-footer style="background-color: white !important; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);" *ngIf="showContactInfo()"   dir="{{GlobalFields.getLanguageLayout()}}">
+  <ion-toolbar  style="background-color: white !important;">
+      <div *ngIf="GlobalFieldsListingPro.selectedListing && iniFinished" style="display: inline-flex; width: 100%;list-style-type: none; padding-bottom:10px; white-space: nowrap; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;">
+
+        <!-- Fast btns -->
+        <span style="display: inline-flex;" [class.fastBtnPaddingLeft]="GlobalFields.site_details.showDirectMessageBtn && GlobalFields.getLanguageLayout() =='ltr'" [class.fastBtnPaddingRight]="GlobalFields.site_details.showDirectMessageBtn && GlobalFields.getLanguageLayout() =='rtl'">
+          <div [className]="getActionContainerClass()" *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.website" [style.background-color] = "GlobalFields.site_details.actionButtonStyle=='2' ? 'white' : '#2ba3ff'">
+            <a (click)="openLink(GlobalFieldsListingPro.selectedListing.post_meta.website)">
+              <i class="fas fa-globe" style="color: #2ba3ff"></i>
+              <!-- <img src="../../assets/imgs/social_icons/envelope.svg" style="height: 40px;"/> -->
+              <span [className]="getActionLabelClass()"> Website</span>
+            </a>
+          </div>
+          <div [className]="getActionContainerClass()" *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.email" [style.background-color] = "GlobalFields.site_details.actionButtonStyle=='2' ? 'white' : '#FFC107'">
+            <a (click)="openLink('mailto:' + GlobalFieldsListingPro.selectedListing.post_meta.email + '?Subject=My%20Custom%20Subject')">
+              <i class="fas fa-envelope" style="color: #FFC107"></i>
+              <span [className]="getActionLabelClass()"> Email</span>
+            </a>
+          </div>
+          <div [className]="getActionContainerClass()" *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.whatsapp && GlobalFields.site_details.showWhatsappBtn" [style.background-color] = "GlobalFields.site_details.actionButtonStyle=='2' ? 'white' : '#25d366'">
+            <a (click)="openLink('https://wa.me/' + clearSpaces(GlobalFieldsListingPro.selectedListing.post_meta.whatsapp))">
+              <i class="fab fa-whatsapp" style="color: #25d366"></i>
+              <!-- <img src="../../assets/imgs/social_icons/whatsapp.svg" style="height: 40px;"/> -->
+              <span [className]="getActionLabelClass()"> WhatsApp</span>
+            </a>
+          </div>
+          <div [className]="getActionContainerClass()" *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.phone" (click)="callNumberAction(GlobalFieldsListingPro.selectedListing.post_meta.phone)" [style.background-color] = "GlobalFields.site_details.actionButtonStyle=='2' ? 'white' : '#E91E63'">
+            <i class="fas fa-phone" style="color: #E91E63"></i>
+            <!-- <img src="../../assets/imgs/social_icons/phone-call.svg" style="height: 40px;"/> -->
+            <span [className]="getActionLabelClass()"> {{'CALL' | translate}}</span>
+          </div>
+
+          <div [className]="getActionContainerClass()" *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.gAddress" (click)="goToNavigatorAction(GlobalFieldsListingPro.selectedListing.post_meta.gAddress)" [style.background-color] = "GlobalFields.site_details.actionButtonStyle=='2' ? 'white' : '#03A9F4'">
+              <i class="fas fa-map-marker-alt" style="color: #03A9F4"></i>
+              <span  [className]="getActionLabelClass()" > {{'GO' | translate}}</span>
+          </div>
+          <div *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.facebook" style="display: flex;">
+            <div [className]="getActionContainerClass()" [style.background-color] = "GlobalFields.site_details.actionButtonStyle=='2' ? 'white' : getLinkColor('Facebook')">
+              <a (click)="openLink(GlobalFieldsListingPro.selectedListing.post_meta.facebook)" [style.color]="getLinkColor('Facebook')">
+               <i class="{{getLinkIcon('Facebook')}}"></i>
+               <span [className]="getActionLabelClass()"> Facebook</span>
+              </a>
+            </div>
+          </div>
+          <div *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.instagram" style="display: flex;">
+            <div [className]="getActionContainerClass()" [style.background-color] = "GlobalFields.site_details.actionButtonStyle=='2' ? 'white' : getLinkColor('Instagram')">
+              <a (click)="openLink(GlobalFieldsListingPro.selectedListing.post_meta.instagram)" [style.color]="getLinkColor('Instagram')">
+               <i class="{{getLinkIcon('Instagram')}}"></i>
+               <span [className]="getActionLabelClass()"> Instagram</span>
+              </a>
+            </div>
+          </div>
+          <div *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.twitter" style="display: flex;">
+            <div [className]="getActionContainerClass()" [style.background-color] = "GlobalFields.site_details.actionButtonStyle=='2' ? 'white' : getLinkColor('Twitter')">
+              <a (click)="openLink(GlobalFieldsListingPro.selectedListing.post_meta.twitter)" [style.color]="getLinkColor('Twitter')">
+               <i class="{{getLinkIcon('Twitter')}}"></i>
+               <span [className]="getActionLabelClass()"> Twitter</span>
+              </a>
+            </div>
+          </div>
+          <div *ngIf="GlobalFieldsListingPro.selectedListing.post_meta.linkedin" style="display: flex;">
+            <div [className]="getActionContainerClass()" [style.background-color] = "GlobalFields.site_details.actionButtonStyle=='2' ? 'white' : getLinkColor('Linkedin')">
+              <a (click)="openLink(GlobalFieldsListingPro.selectedListing.post_meta.linkedin)" [style.color]="getLinkColor('Linkedin')">
+               <i class="{{getLinkIcon('linkedin')}}"></i>
+                <!-- <img src="../../assets/imgs/social_icons/{{getLinkIcon(link.network)}}.svg" style="height: 40px;"/> -->
+               <span [className]="getActionLabelClass()"> Linkedin</span>
+              </a>
+            </div>
+          </div>
+        </span>
+
+
+
+      </div>
+  </ion-toolbar>
+</ion-footer>
+
+
+
+

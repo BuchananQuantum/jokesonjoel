@@ -1,0 +1,295 @@
+<ion-header class="ionHeaderHeader" dir="{{GlobalFields.getLanguageLayout()}}" style="background-color: white; border: none; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);">
+  <ion-toolbar  class="toolbarHeader">
+    <div class="headerContainer">
+      <div class="headerCol1">
+        <ion-icon name="close" style="font-size: 30px; margin: 3px;" (click)="closeModal()"></ion-icon>
+      </div>
+      <div class="headerCol2">
+        <span>{{'CREATE_LISTING' | translate}}</span>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding [ngStyle]="GlobalFields.getBodyColorBackgroundJson()" dir="{{GlobalFields.getLanguageLayout()}}">
+
+  <div style="height: 100%; width: 100%; margin-top: 10px; margin-bottom: 130px" *ngIf="newListing && newListing.post_meta">
+
+    <!-- Login -->
+    <div *ngIf="!GlobalFields.isLoggedIn">
+      <div class="pageSection">
+        <loginComponent (loginComplete)="checkPackages()"></loginComponent>
+      </div>
+    </div>
+
+    <!-- Loading Packages -->
+    <div *ngIf="loadingPackages && GlobalFields.isLoggedIn && selectedType">
+      <ion-list style="padding: 15px">
+        <div *ngFor="let items of [1,2,3]">
+          <ion-thumbnail style="width: 100%; height: 200px;">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <h3><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
+            <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+            <p><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></p>
+          </ion-label>
+          <br>
+        </div>
+      </ion-list>
+    </div>
+
+    <!-- Packages
+    <div *ngIf="!loadingPackages && GlobalFields.isLoggedIn && !can_create_listing">
+      <div style="font-weight: 600; font-size: 30px; text-align: center">{{"CHOOSE_A_PACKAGE" | translate}}</div>
+      <br>
+Already have packages
+      <span *ngIf="packagesAlreadyBought && packagesAlreadyBought.length>0">
+          <div style="color: #898989; font-size: 18px; text-align: center">{{"USE_AVAILABLE_PACKAGE" | translate}}</div>
+          <ion-card *ngFor="let package of packagesAlreadyBought" style="padding: 0px 15px;" (click)="newListing.listing_package=package.id; can_create_listing=true">
+            <h3>{{package.name}}</h3>
+            <span *ngIf="package.limit > 0">{{'REMAINING_LISTINGS' | translate}}: {{package.limit - package.count}}</span><br>
+            <span *ngIf="package.duration > 0">{{'LISTED_FOR' | translate}} {{package.duration}} days</span>
+            <button style="float: right; margin-bottom: 10px; padding: 10px; border-radius: 50px; box-shadow: 0 2px 8px rgba(0,0,0,.15)!important; background-color: white;">
+              {{'SELECT' | translate}}
+            </button>
+          </ion-card>
+          <hr>
+          <div style="color: #898989; font-size: 18px; text-align: center">Or buy a new one</div>
+          <br>
+        </span>
+      <div *ngIf="packagesToBuy && packagesToBuy.length>0">
+           <span *ngFor="let prod of packagesToBuy" >
+            <productList [product]="prod" [packages]="true"></productList>
+           </span>
+      </div>
+    </div>
+-->
+    <!-- Creation form -->
+    <div *ngIf="GlobalFields.isLoggedIn && can_create_listing" class="animated fadeIn">
+      <span *ngFor="let field of GlobalFieldsListingPro.listingTypeDetail.submit_template">
+        <span *ngIf="field && canShowPackageCondition(field)">
+            <!-- Header -->
+            <div *ngIf="field.form_type == 'lp-submit-form-sec'" class="headerSection">
+                <div class="divisor"  *ngIf="GlobalFields.isWhiteBackground()"></div>
+                <ion-label class="titleSectionFilter">{{field.label}}</ion-label>
+            </div>
+          <!-- Title-->
+            <div *ngIf="field.type == 'postTitle'" class="filterSectionForm">
+                <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span> <i class="fas fa-pen iconField"></i></label>
+                <ion-input clearInput placeholder="{{field.placeholder}}" [(ngModel)]="newListing.post_title"></ion-input>
+                <i style="font-size: x-small">{{field.tipdesc}}</i>
+            </div>
+          <!-- Tagline -->
+            <div *ngIf="field.type == 'lptagline'" class="filterSectionForm">
+                <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span> <i class="fas fa-pen iconField"></i></label>
+                <ion-input clearInput placeholder="{{field.placeholder}}" [(ngModel)]="newListing.post_meta.tagline_text"></ion-input>
+                <i style="font-size: x-small">{{field.tipdesc}}</i>
+            </div>
+          <!-- Description -->
+          <div *ngIf="field.type == 'inputDescription'" class="filterSectionForm">
+                <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span> <i class="fas fa-pen iconField"></i></label>
+                <ion-textarea class="textareaEditor" rows="15" cols="20"  placeholder="{{field.placeholder}}" [(ngModel)]="newListing.post_content"></ion-textarea>
+                <i style="font-size: x-small">{{field.tipdesc}}</i>
+            </div>
+          <!-- Location -->
+          <div *ngIf="field.type == 'gAddress'" class="filterSectionForm">
+              <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span> <i class="fas fa-map-marked-alt iconField"></i></label>
+                <i *ngIf="newListing.post_meta.gAddress != GlobalFields.address" (click)="newListing.post_meta.gAddress = GlobalFields.address" class="fas fa-location-arrow" style=" float: right; margin-top: 30px;"></i>
+                <i *ngIf="newListing.post_meta.gAddress == GlobalFields.address"  (click)="newListing.post_meta.gAddress = GlobalFields.address" class="fas fa-location-arrow" style=" float: right; margin-top: 30px;" [ngStyle]="GlobalFields.getPrimaryColorJson()"></i>
+               <div style="width: 90%; margin: auto;">
+                <googleMapsAutocomplete [value]="newListing.post_meta.gAddress" [placeholder]="field.placeholder" (addressName)="newListing.post_meta.gAddress=$event"></googleMapsAutocomplete>
+              </div>
+              <i style="font-size: x-small">{{field.tipdesc}}</i>
+            </div>
+          <!-- Website -->
+          <div *ngIf="field.type == 'inputWebsite'" class="filterSectionForm">
+              <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span> <i class="fas fa-pen iconField"></i></label>
+              <ion-input clearInput placeholder="{{field.placeholder}}" [(ngModel)]="newListing.post_meta.website"></ion-input>
+              <i style="font-size: x-small">{{field.tipdesc}}</i>
+          </div>
+          <!-- Phone -->
+          <div *ngIf="field.type == 'inputPhone'" class="filterSectionForm">
+              <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span> <i class="fas fa-pen iconField"></i></label>
+              <ion-input clearInput placeholder="{{field.placeholder}}" [inputmode]="'tel'" [(ngModel)]="newListing.post_meta.website"></ion-input>
+              <i style="font-size: x-small">{{field.tipdesc}}</i>
+          </div>
+          <!-- Whatsapp -->
+          <div *ngIf="field.type == 'inputWhatsapp'" class="filterSectionForm">
+              <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span> <i class="fas fa-pen iconField"></i></label>
+              <ion-input clearInput placeholder="{{field.placeholder}}" [inputmode]="'tel'" [(ngModel)]="newListing.post_meta.website"></ion-input>
+              <i style="font-size: x-small">{{field.tipdesc}}</i>
+          </div>
+          <!-- Categories -->
+          <div *ngIf="field.type == 'inputCategory'" class="filterSectionForm">
+            <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span> <i class="far fa-check-circle iconField"></i></label>
+              <br>
+              <i style="font-size: x-small">{{field.tipdesc}}</i>
+              <ion-item style="padding:0px;">
+                  <ion-select [multiple]="field.multi!='no'" [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate"  [(ngModel)]="GlobalFieldsListingPro.addForm.categories" placeholder="{{'SELECT' | translate}}" selectedText="{{GlobalFieldsListingPro.addForm.categories}}">
+                      <ion-select-option  *ngFor="let c of GlobalFieldsListingPro.listingCategories" value="{{c.name}}">{{c.name}}</ion-select-option>
+                  </ion-select>
+              </ion-item>
+          </div>
+          <!-- Regions -->
+          <div *ngIf="field.type == 'inputCity'" class="filterSectionForm">
+            <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span><i class="fas fa-check-circle iconField"></i></label>
+            <div style="max-height: 200px; overflow-y: auto; border: solid 1px #cfced2; padding: 0 10px 30px 0; border-radius: 5px; background-color: #f4f4f4;">
+              <ion-item style="padding:0px;">
+                  <ion-select [multiple]="field.multi!='no'" [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate"  [(ngModel)]="GlobalFieldsListingPro.addForm.locations" placeholder="{{'SELECT' | translate}}" selectedText="{{GlobalFieldsListingPro.addForm.locations}}">
+                      <ion-select-option  *ngFor="let c of GlobalFieldsListingPro.regions" value="{{c.name}}">{{c.name}}</ion-select-option>
+                  </ion-select>
+              </ion-item>
+            </div>
+          </div>
+          <!-- Tags -->
+          <div *ngIf="field.type == 'inputTags'" class="filterSectionForm">
+            <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span> <i class="far fa-check-circle iconField"></i></label>
+              <br>
+              <div style="max-height: 200px; overflow-y: auto; border: solid 1px #cfced2; padding: 0 10px 30px 0; border-radius: 5px; background-color: #f4f4f4;">
+                <ion-item *ngFor="let t of GlobalFieldsListingPro.addForm.tags" style=" font-size: 10pt; padding: 0; margin-bottom: -11px; background-color: transparent;">
+                    <ion-label>{{t.val.name}}</ion-label>
+                    <ion-checkbox slot="end" [(ngModel)]="t.isChecked" ></ion-checkbox>
+                </ion-item>
+              </div>
+              <i style="font-size: x-small">{{field.tipdesc}}</i>
+          </div>
+
+          <!-- Price range -->
+          <div *ngIf="field.type == 'priceDetails'" class="filterSectionForm">
+            <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span> <i class="far fa-check-circle iconField"></i></label>
+              <br>
+              <i style="font-size: x-small">{{field.tipdesc}}</i>
+              <ion-item style="padding:0px;">
+                <ion-segment [(ngModel)]="GlobalFieldsListingPro.addForm.price_status">
+                  <ion-segment-button value="'inexpensive'">
+                    <ion-label>{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}</ion-label>
+                  </ion-segment-button>
+                  <ion-segment-button value="'moderate'">
+                    <ion-label>{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}</ion-label>
+                  </ion-segment-button>
+                  <ion-segment-button value="'pricey'">
+                    <ion-label>{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}</ion-label>
+                  </ion-segment-button>
+                  <ion-segment-button value="'ultra_high_end'">
+                    <ion-label>{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}{{GlobalFieldsListingPro.listingTypeDetail.listing_pricerange_symbol}}</ion-label>
+                  </ion-segment-button>
+                </ion-segment>
+              </ion-item>
+          </div>
+
+          <!-- Business Hours -->
+          <div *ngIf="field.type == 'businessHours'" class="filterSectionForm">
+            <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span> <i class="far fa-check-circle iconField"></i></label>
+              <br>
+              <i style="font-size: x-small">{{field.tipdesc}}</i>
+          </div>
+
+          <!-- Social Media -->
+           <div *ngIf="field.type == 'socialMedia'" class="filterSectionForm">
+            <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span> <i class="fas fa-link iconField"></i></label>
+              <br>
+              <div>
+                <div *ngFor="let link of GlobalFieldsListingPro.addForm.socials; let ind = index" style="display: inline-flex; width: 100%; padding: 5px;">
+                  <div style="font-size: 9pt; width: 100%">
+                    <ion-select multiple="false" [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate"
+                                style="border-bottom: solid 1px #d5d3d7; padding: 10px;"
+                                [compareWith]="compareWithSocialNet" [(ngModel)]="link.key" placeholder="{{'SELECT' | translate}}">
+                      <ion-select-option  *ngFor="let key of socialNetworks_keys; let j=index" value="{{key}}">{{socialNetworks[j]}}</ion-select-option>
+                    </ion-select>
+                    <ion-input clearInput type="url" inputmode="url" placeholder="{{field.placeholder}}" [(ngModel)]="link.value"></ion-input>
+                  </div>
+                  <button (click)="deleteEntryFromLinks(ind)"><i class="fas fa-trash"></i></button>
+                 </div>
+                <button class="addWorkHoursBtn" (click)="addSocialNetLink()">{{'ADD' | translate}}</button>
+              </div>
+
+              <i style="font-size: x-small">{{field.tipdesc}}</i>
+            </div>
+
+          <!-- Faqs -->
+          <div *ngIf="field.type == 'faqs'" class="filterSectionForm">
+            <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span> <i class="far fa-check-circle iconField"></i></label>
+              <br>
+              <i style="font-size: x-small">{{field.tipdesc}}</i>
+          </div>
+
+          <!-- Video URL -->
+          <div *ngIf="field.type == 'postVideo'" class="filterSectionForm">
+              <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span> <i class="fas fa-pen iconField"></i></label>
+              <ion-input clearInput placeholder="{{field.placeholder}}" [(ngModel)]="newListing.post_meta.video"></ion-input>
+              <i style="font-size: x-small">{{field.tipdesc}}</i>
+          </div>
+
+          <!-- Gallery -->
+          <div *ngIf="field.type == 'postGallery'" class="filterSectionForm">
+            <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span></label>
+              <br>
+                  <ion-button (click)="openImagePicker(true, 'gallery')"><i class="fas fa-camera"></i></ion-button>
+              <br>
+              <!-- Preview -->
+              <div *ngIf="uploadingImg" class="loadingUpload"><i class="fas fa-spinner fa-spin"></i></div>
+              <span *ngIf="GlobalFieldsListingPro.addForm.gallery">
+                  <span *ngFor="let img of GlobalFieldsListingPro.addForm.gallery; let i=index">
+                     <img  src={{img}} class="imgPreview">
+                     <i class="far fa-trash-alt" style="color: #e43854; padding: 10px;margin-left: 5px;" (click)="deleteNewImg(i, 'gallery')"></i>
+                  </span>
+              </span>
+              <br>
+              <i style="font-size: x-small">{{field.tipdesc}}</i>
+          </div>
+
+          <!-- Featured Image -->
+          <div *ngIf="field.type == 'featuredimage'" class="filterSectionForm">
+            <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span></label>
+              <br>
+                  <ion-button (click)="openImagePicker(true, 'featuredimage')"><i class="fas fa-camera"></i></ion-button>
+              <br>
+              <!-- Preview -->
+              <div *ngIf="uploadingImg" class="loadingUpload"><i class="fas fa-spinner fa-spin"></i></div>
+              <span *ngIf="GlobalFieldsListingPro.addForm.featuredimage">
+                <img [src]="GlobalFieldsListingPro.addForm.featuredimage" class="imgPreview">
+              </span>
+              <br>
+              <i style="font-size: x-small">{{field.tipdesc}}</i>
+          </div>
+
+          <!-- Business Logo -->
+          <div *ngIf="field.type == 'businessLogo'" class="filterSectionForm">
+            <label>{{field.label}}<span *ngIf="field.required!='undefined'">*</span></label>
+              <br>
+                  <ion-button (click)="openImagePicker(true, 'featuredimage')"><i class="fas fa-camera"></i></ion-button>
+              <br>
+              <!-- Preview -->
+              <div *ngIf="uploadingImg" class="loadingUpload"><i class="fas fa-spinner fa-spin"></i></div>
+              <span *ngIf="GlobalFieldsListingPro.addForm.businessLogo">
+                <img [src]="GlobalFieldsListingPro.addForm.businessLogo" class="imgPreview">
+              </span>
+              <br>
+              <i style="font-size: x-small">{{field.tipdesc}}</i>
+          </div>
+
+
+          <!-- CUSTOM --->
+
+
+        </span>
+
+      </span>
+
+      <!--<button (click)="log(newListing)">log</button> -->
+
+
+      <ion-button class="confirmBtn" color="success" (click)="saveListing(); closeModal()" [disabled]="checkIfFieldsMissing()">
+        {{'SAVE' | translate}}
+      </ion-button>
+
+    </div>
+
+
+
+  </div>
+
+</ion-content>
+

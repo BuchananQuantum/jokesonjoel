@@ -1,0 +1,83 @@
+
+
+<ion-content *ngIf="GlobalFields.showDemo" style="
+background-size: cover;
+background-color: white;
+background-image: url(https://customlistingapp.italiancoders.com/wp-content/uploads/2021/05/demo_selection_view_2-e1620750224138.png);">
+
+  <div style="padding: 10px; text-align: center; color: black">
+    <img src="https://customlistingapp.italiancoders.com/wp-content/uploads/2021/05/logo_wide-copia.png" style="width: 75%; margin-top: 10px">
+    <h1 class="mainTitle">Choose a theme</h1>
+    <p class="mainSubtitle">It will be used as website backend demo</p>
+    <br><br><br>
+
+    <div class="themeOption" (click)="selectTheme('ml')"
+         style="background: rgb(255,92,166); background: linear-gradient(90deg, rgb(252 69 152) 11%, rgb(248 63 63) 97%)">
+      <img src="../../../assets/imgs/ml_logo.png">
+      <span>mylisting</span>
+    </div>
+    <div class="themeOption" (click)="selectTheme('lp')"
+         style="background: rgb(92,180,255);background: linear-gradient(90deg, rgb(64 165 252) 11%, rgb(71 77 201) 97%);">
+      <img src="../../../assets/imgs/lp_logo.png">
+      <span>listingpro</span>
+    </div>
+
+  </div>
+
+</ion-content>
+
+
+<ion-content *ngIf="!GlobalFields.showDemo && !softLoading" style="height: 100%; width: 100%; position: absolute; z-index: 99999; background-color: white">
+
+
+  <div style="height: 100%; width: 100%; background-color: white; overflow-y: hidden">
+
+
+    <div *ngIf="!GlobalFields.errorIni">
+      <ion-list style="padding: 15px">
+        <div *ngFor="let items of [1,2,3]">
+          <ion-thumbnail style="width: 100%; height: 200px;">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <h3>
+              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+            </h3>
+            <p>
+              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            </p>
+          </ion-label>
+          <br>
+        </div>
+      </ion-list>
+    </div>
+
+
+    <div *ngIf="GlobalFields.errorIni"
+         style="position: fixed; text-align: center; margin: auto; bottom: 10%; width: 100%;"> Server not available, try
+      again <br>
+      <ion-button color="success" (click)="retryInit()"><i class="fas fa-redo-alt" style="margin-right: 5px"></i>
+        Refresh
+      </ion-button>
+      <br><br>
+      <span style="color: red; font-size: smaller">{{GlobalFields.errorString}}</span>
+    </div>
+
+  </div>
+
+  <!-- <div class="cssload-spin-box"></div>-->
+
+
+</ion-content>
+
+<ion-content *ngIf="!GlobalFields.showDemo && softLoading" style="height: 100%; width: 100%; z-index: 99999;">
+
+  <div style="height: 100%; width: 100%; background-color: rgba(189,189,189,0.6)">
+
+  </div>
+  <div class="cssload-spin-box"></div>
+
+</ion-content>

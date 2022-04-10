@@ -1,0 +1,167 @@
+
+<ion-header (swiperight)="closeModal()" dir="{{GlobalFields.getLanguageLayout()}}">
+  <ion-toolbar style="padding: 10px;">
+    <ion-row class="filters" dir="{{GlobalFields.getLanguageLayout()}}">
+      <ion-col no-padding  size="1" style="text-align: center">
+        <button class="btnFloatingWhite" (click)="closeModal()">
+          <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='ltr'" name="chevron-back-outline"></ion-icon>
+          <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='rtl'" name="chevron-forward-outline"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col no-padding  size="11">
+        <ion-input clearInput placeholder="{{'WHAT_SEARCH' | translate}}"
+                   [(ngModel)]="searchQuery" enterkeyhint="search"
+                   style="margin-left: 20px;padding-left: 0px !important; width: calc(100% - 10px);"
+                   (keyup.enter)="generalSearch()"
+                   (change)="results=undefined;"
+                   (ionInput)="results= searchQuery=='' || !searchQuery ? undefined : results"
+        ></ion-input>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content dir="{{GlobalFields.getLanguageLayout()}}" style="padding-top: 20px;">
+
+  <!-- Loading animation-->
+  <div *ngIf="loading">
+    <ion-list>
+      <ion-list-header>
+        <ion-label><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]">
+        <ion-avatar slot="start">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div>
+
+    <ion-list *ngIf="!results && !loading" dir="{{GlobalFields.getLanguageLayout()}}">
+
+      <!-- Search near me -->
+      <ion-list-header>
+        <ion-label style="text-transform: capitalize"><b>{{'NEAR_YOU' | translate}}</b></ion-label>
+      </ion-list-header>
+      <span *ngFor="let cat of GlobalFieldsListingPro.listingCategories">
+         <ion-item *ngIf="cat && cat.count>0" style="color: #484848;" [detail]="false" (click)="searchNearMe(cat.name)">
+          <span slot="start" class="iconType">
+            <img *ngIf="cat.icon1" src="{{cat.icon1}}" style="height: 20px;margin-top: -5px;">
+          </span>
+          <ion-label>
+            {{cat.name}}
+            <br>
+            <span style="font-size: 9pt">{{cat.count}} {{'LISTINGS' | translate}}</span>
+          </ion-label>
+          <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='ltr'" name="chevron-forward-outline" slot="end" style="height: 20px;"></ion-icon>
+          <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='rtl'" name="chevron-back-outline" slot="end" style="height: 20px;"></ion-icon>
+        </ion-item>
+      </span>
+    </ion-list>
+
+    <!-- Results -->
+
+    <span *ngIf="results && !loading" dir="{{GlobalFields.getLanguageLayout()}}">
+
+      <!-- No results -->
+      <ion-list *ngIf="!results.suggestions || ( (!results.suggestions.listing || results.suggestions.listing.length==0) && (!results.suggestions.cats || results.suggestions.cats.length==0)
+      && (!results.suggestions.tag || results.suggestions.tag.length==0))" dir="{{GlobalFields.getLanguageLayout()}}">
+          <ion-item style="color: #484848;" [detail]="false">
+            <span slot="start" class="iconType">
+            </span>
+            <ion-label>
+              <b>{{'NO_RESULTS' | translate}}</b>
+            </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <span *ngIf="results.suggestions">
+
+        <!-- Listings -->
+        <ion-list *ngIf="results.suggestions.listing && results.suggestions.listing.length>0" dir="{{GlobalFields.getLanguageLayout()}}">
+          <ion-list-header>
+            <ion-label><b>{{'LISTINGS' | translate}}</b></ion-label>
+          </ion-list-header>
+          <span *ngFor="let listing of results.suggestions.listing">
+            <ion-item (click)="getListingDetails(listing.ID)"
+                      style="color: #484848;" [detail]="false">
+              <span slot="start" class="iconType">
+                <div *ngIf="listing.thumb" class="imageCacheGeneralSearch">
+                  <img-loader [src]="listing.thumb" useImg [imgAttributes]="getImgCachedClass('imgAirbnbHomeType')"></img-loader>
+                </div>
+              </span>
+              <ion-label>
+                <b>{{listing.title}}</b>
+                 <br>
+              <span style="font-size: 9pt">
+                <span *ngIf="listing.locations && listing.locations.length>0;else second">
+                  {{listing.locations[0].name}}
+                </span>
+                <ng-template #second *ngIf="listing.gAddress">
+                  {{listing.gAddress}}
+                </ng-template>
+              </span>
+              </ion-label>
+              <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='ltr'" name="chevron-forward-outline" slot="end" style="height: 20px;"></ion-icon>
+              <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='rtl'" name="chevron-back-outline" slot="end" style="height: 20px;"></ion-icon>
+            </ion-item>
+          </span>
+        </ion-list>
+
+        <!-- Categories -->
+        <ion-list *ngIf="results.suggestions.cats && results.suggestions.cats.length>0" dir="{{GlobalFields.getLanguageLayout()}}">
+          <ion-list-header>
+            <ion-label><b>{{'CATEGORIES' | translate}}</b></ion-label>
+          </ion-list-header>
+          <span *ngFor="let cat of results.suggestions.cats">
+            <ion-item style="color: #484848;" [detail]="false" (click)="getListingsByCategory(cat.name)">
+              <span slot="start" class="iconType"><img *ngIf="cat.icon1" src="{{cat.icon1}}" style="height: 20px;margin-top: -5px;"></span>
+            <ion-label>
+              <b>{{cat.name}}</b>
+              <br>
+              <span style="font-size: 9pt">{{cat.count}} {{'LISTINGS' | translate}}</span>
+            </ion-label>
+            <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='ltr'" name="chevron-forward-outline" slot="end" style="height: 20px;"></ion-icon>
+            <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='rtl'" name="chevron-back-outline" slot="end" style="height: 20px;"></ion-icon>
+          </ion-item>
+          </span>
+        </ion-list>
+
+        <!-- Tags -->
+        <ion-list *ngIf="results.suggestions.tag && results.suggestions.tag.length>0" dir="{{GlobalFields.getLanguageLayout()}}">
+          <ion-list-header>
+            <ion-label><b>Features</b></ion-label>
+          </ion-list-header>
+          <span *ngFor="let tag of results.suggestions.tag">
+            <ion-item (click)="getListingsByTag(tag)"
+                      style="color: #484848;" [detail]="false">
+              <span slot="start" class="iconType"><i class="fas fa-hashtag"></i></span>
+            <ion-label>
+              <b>{{tag.name}}</b>
+              <br>
+              <span style="font-size: 9pt">{{tag.count}} {{'LISTINGS' | translate}}</span>
+            </ion-label>
+            <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='ltr'" name="chevron-forward-outline" slot="end" style="height: 20px;"></ion-icon>
+            <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='rtl'" name="chevron-back-outline" slot="end" style="height: 20px;"></ion-icon>
+          </ion-item>
+          </span>
+        </ion-list>
+
+
+
+      </span>
+
+
+
+    </span>
+  </div>
+
+</ion-content>
+
