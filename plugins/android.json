@@ -1,0 +1,108 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-ionic-keyboard": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-dialogs": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "call-number": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+      "GOOGLE_API_KEY_FOR_ANDROID": "AIzaSy....",
+      "OKHTTP_VERSION": "3.12.0",
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-geolocation": {
+      "GPS_REQUIRED": "true",
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-nativegeocoder": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-x-socialsharing": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-nativestorage": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "com-badrit-base64": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-ionic-webview": {
+      "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "29.+",
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-androidx": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-androidx-adapter": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-android-support-gradle-release": {
+      "ANDROID_SUPPORT_VERSION": "29.+",
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-cocoapod-support": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-facebook4": {
+      "APP_ID": "984354155338065",
+      "APP_NAME": "Custom Listing App",
+      "FACEBOOK_HYBRID_APP_EVENTS": "false",
+      "FACEBOOK_ANDROID_SDK_VERSION": "5.13.0",
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-telerik-imagepicker": {
+      "ANDROID_SUPPORT_V7_VERSION": "27.+",
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-app-version": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-googleplus": {
+      "PLAY_SERVICES_VERSION": "15.0.1",
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "onesignal-cordova-plugin": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-actionsheet": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "cordova-plugin-add-swift-support": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    },
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "app.uberbooty.ionicenterpriseapps"
+    }
+  }
+}

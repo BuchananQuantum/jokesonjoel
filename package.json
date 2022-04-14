@@ -62,6 +62,7 @@
     "color": "3.1.0",
     "com-badrit-base64": "^0.2.0",
     "compare-func": "^2.0.0",
+    "cordova": "^11.0.0",
     "cordova-android": "^9.1.0",
     "cordova-android-support-gradle-release": "^3.0.1",
     "cordova-ios": "^6.2.0",
@@ -188,7 +189,8 @@
         "FACEBOOK_ANDROID_SDK_VERSION": "5.13.0"
       },
       "cordova-plugin-telerik-imagepicker": {
-        "PHOTO_LIBRARY_USAGE_DESCRIPTION": " "
+        "PHOTO_LIBRARY_USAGE_DESCRIPTION": " ",
+        "ANDROID_SUPPORT_V7_VERSION": "27.+"
       },
       "cordova-plugin-app-version": {},
       "cordova-plugin-googleplus": {
